@@ -22,12 +22,15 @@ spec:
           image: ghcr.io/mateplo/java-demo-appweb:latest
           ports:
             - containerPort: 8080
+          # Tailles calibrées pour une JVM + Tomcat (pas nginx) : un JDK 11 idle consomme
+          # ~150-200Mi (heap + metaspace + threads + code cache). 64Mi -> OOMKilled au
+          # démarrage. La JVM dimensionne son heap par défaut à ~25% de la limite cgroup.
           resources:
             requests:
-              cpu: 10m
-              memory: 16Mi
+              cpu: 50m
+              memory: 256Mi
             limits:
-              memory: 64Mi
+              memory: 512Mi
 ---
 apiVersion: v1
 kind: Service
