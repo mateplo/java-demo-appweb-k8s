@@ -6,7 +6,7 @@ resources:
   - ../../base
 images:
   - name: ghcr.io/mateplo/java-demo-appweb
-    newTag: dev
+    newTag: dev-4b2b5b4
     newName: ghcr.io/mateplo/java-demo-appweb
 patches:
   - target: {kind: HTTPRoute, name: java-demo-appweb}
