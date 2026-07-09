@@ -8,7 +8,7 @@ resources:
   - hpa.yaml
 images:
   - name: ghcr.io/mateplo/java-demo-appweb
-    newTag: main-92d2ff5
+    newTag: main-4bc6c79
     newName: ghcr.io/mateplo/java-demo-appweb
 patches:
   - target: {kind: HTTPRoute, name: java-demo-appweb}
