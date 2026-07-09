@@ -1,0 +1,20 @@
+# Overlay PROD — namespace java-demo-appweb-prod, tag de la branche main (main-*),
+# pod applicatif autoscalé par HPA (1->5).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: java-demo-appweb-prod
+
+resources:
+  - ../../base
+  - hpa.yaml
+
+images:
+  - name: ghcr.io/mateplo/java-demo-appweb
+    newTag: main
+
+patches:
+  - target: { kind: HTTPRoute, name: java-demo-appweb }
+    patch: |
+      - op: replace
+        path: /spec/hostnames/0
+        value: java-demo-appweb.classlab.lan

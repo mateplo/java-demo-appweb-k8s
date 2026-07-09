@@ -1,0 +1,15 @@
+# Base kustomize de la webapp Java — commune aux environnements (dev / prod).
+# Les overlays fixent : namespace, tag d'image (GHCR), hostname HTTPRoute, et
+# l'autoscaling (HPA, prod uniquement).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - app.yaml
+  - httproute.yaml
+  - servicemonitors.yaml
+
+# Image surveillée par Argo CD Image Updater. Les overlays surchargent newTag.
+images:
+  - name: ghcr.io/mateplo/java-demo-appweb
+    newTag: latest

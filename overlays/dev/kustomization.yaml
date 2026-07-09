@@ -1,0 +1,16 @@
+# Overlay DEV — namespace java-demo-appweb-dev, tag dev-* (Image Updater = newest-build).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: java-demo-appweb-dev
+resources:
+  - ../../base
+images:
+  - name: ghcr.io/mateplo/java-demo-appweb
+    newTag: dev
+    newName: ghcr.io/mateplo/java-demo-appweb
+patches:
+  - target: {kind: HTTPRoute, name: java-demo-appweb}
+    patch: |
+      - op: replace
+        path: /spec/hostnames/0
+        value: java-demo-appweb-dev.classlab.lan

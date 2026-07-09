@@ -1,0 +1,29 @@
+# Expose l'app via le Gateway partagé `classlab` (ns kube-system, listener https 8443,
+# TLS wildcard *.classlab.lan). Application mono-composant -> une seule règle :
+#   /  -> java-demo-appweb:80 (Service, qui redirige vers Tomcat 8080)
+# hostname = valeur par défaut (prod) ; patché par overlay pour dev.
+# group/kind/weight déclarés explicitement pour éviter la dérive ArgoCD.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: java-demo-appweb
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: classlab
+      namespace: kube-system
+      sectionName: https
+  hostnames:
+    - java-demo-appweb.classlab.lan
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: java-demo-appweb
+          port: 80
+          weight: 1

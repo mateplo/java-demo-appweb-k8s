@@ -1,0 +1,15 @@
+# Autoscaling PROD uniquement : le Deployment java-demo-appweb scale de 1 à 5 pods
+# selon la charge CPU (cible 80% de la request CPU). Nécessite metrics-server (présent
+# sur k3s) et des `requests.cpu` sur les conteneurs (définies dans la base). Namespace
+# injecté par l'overlay (java-demo-appweb-prod).
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: java-demo-appweb
+spec:
+  scaleTargetRef: { apiVersion: apps/v1, kind: Deployment, name: java-demo-appweb }
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource: { name: cpu, target: { type: Utilization, averageUtilization: 80 } }

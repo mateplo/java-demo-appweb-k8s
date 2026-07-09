@@ -1,0 +1,16 @@
+# ServiceMonitor de la webapp : Prometheus scrape /metrics sur le port nommé `http`.
+# L'endpoint est fourni par le client Prometheus embarqué dans le WAR (métriques JVM +
+# app_http_requests_total, cf. web.xml). Placé dans la base -> chaque env en hérite
+# (namespace injecté par l'overlay). kube-prometheus-stack découvre les ServiceMonitor
+# de TOUS les namespaces (serviceMonitorSelectorNilUsesHelmValues=false).
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: java-demo-appweb
+spec:
+  selector:
+    matchLabels:
+      app: java-demo-appweb
+  endpoints:
+    - port: http
+      path: /metrics
