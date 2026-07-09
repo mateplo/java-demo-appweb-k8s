@@ -6,7 +6,7 @@ resources:
   - ../../base
 images:
   - name: ghcr.io/mateplo/java-demo-appweb
-    newTag: dev-f264bf1
+    newTag: dev-0c30a8e
     newName: ghcr.io/mateplo/java-demo-appweb
 patches:
   - target: {kind: HTTPRoute, name: java-demo-appweb}
